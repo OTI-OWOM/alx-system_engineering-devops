@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # This script displays the time for 12 hours and 59 minutes
 
-hour=1
-minute=0
+hour=0
+minute=1
 
 while [ $hour -le 12 ]
 do
