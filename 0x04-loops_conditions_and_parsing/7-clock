@@ -6,16 +6,15 @@ minute=1
 
 while [ $hour -le 12 ]
 do
-   if [ $minute -eq 1 ]
-   then
+   printf "%02d:%02d\n" $hour $minute
       echo "Hour: $hour"
-   fi
-   echo "$hour:$minute"
+   
 
    if [ $minute -eq 59 ]
    then
       minute=0
       ((hour++))
+   else
+      ((minute++))
    fi
-   ((minute++))
 done
