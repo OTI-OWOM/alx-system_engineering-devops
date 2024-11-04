@@ -6,9 +6,9 @@ for i in {1..100}; do
 	
 	if [[ $fb3 == 0 && $fb5 == 0 ]]; then
 	   echo "FizzBuzz"
-	elif [ $fib3 == 0 ]; then
+	elif [ "$fib3" == 0 ]; then
 	   echo "Fizz"
-	elif [ $fib5 == 0 ]; then
+	elif [ "$fib5" == 0 ]; then
 	   echo "Buzz"
 	else
 	   echo "$i"
