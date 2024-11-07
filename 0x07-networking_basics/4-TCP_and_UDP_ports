@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
-# This script displays listening ports:
-# That only shows listening sockets
-# That shows the PID and name of the program to which each socket belongs
-netstat -l --program
+# Script that shows listening ports with PID and program name
+
+# Check if net-tools is installed, if not install it
+if ! command -v netstat &> /dev/null; then
+    echo "netstat could not be found, installing net-tools..."
+    apt-get update
+    apt-get install -y net-tools
+fi
+
+# Show listening ports with PID and program name
+netstat -ltnpu
