@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Script that shows listening ports with PID and program name
+
+# Check if net-tools is installed, if not install it
+if ! command -v netstat &> /dev/null; then
+    echo "netstat could not be found, installing net-tools..."
+    apt-get update
+    apt-get install -y net-tools
+fi
+
+# Show listening ports with PID and program name
+netstat -ltnpu
