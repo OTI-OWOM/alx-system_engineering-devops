@@ -24,7 +24,7 @@ def export_todos_to_json(employee_id):
         todos = response.json()
 
         # create a dictionary to store data
-        todos_dict {
+        todos_dict = {
             employee_id: []
         }
 
@@ -51,7 +51,7 @@ def export_todos_to_json(employee_id):
         print("Something went wrong.")
 
 
-if __main__ == "__main__":
+if __name__ == "__main__":
     if len(sys.argv) !=2:
         print("Usage: python script.py <employee_id>")
         sys.exit(1)
@@ -62,4 +62,4 @@ if __main__ == "__main__":
         print("Usage: python script.py <employee_id>")
         sys.exit(1)
 
-    export_todos_to_json()ID
+    export_todos_to_json(ID)
