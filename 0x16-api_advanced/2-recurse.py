@@ -1,68 +1,49 @@
 #!/usr/bin/python3
-"""Module for recursively retrieving hot articles from a Reddit subreddit."""
-
+""" Queries the Reddit API and returns the number of subscribers """
 import requests
-import sys
 
 
-def recurse(subreddit, hot_list=None):
+def recurse(subreddit, hot_list=[], after=None, max_pages=None):
     """
-    Recursively retrieve hot articles for a given subreddit.
+    Recursively queries the Reddit API and returns a list containing the titles
+    of all hot articles for a given subreddit.
 
     Args:
-        subreddit (str): Name of the subreddit to query
-        hot_list (list, optional): Accumulator for article titles
+        subreddit (str): subreddit to query
+        hot_list (list): list of hot articles
+        after (str): identifier for the next page
+        max_pages (int): maximum number of pages to fetch
 
     Returns:
-        list or None: List of hot article titles or None if invalid subreddit
+        list: list of hot articles
     """
-    # Initialize hot_list on first call
-    if hot_list is None:
-        hot_list = []
+    if max_pages is not None and max_pages <= 0:
+        return hot_list  # Base case: Stop when max_pages is reached or None
 
-    # Reddit API URL and headers
-    url = f"https://www.reddit.com/r/{subreddit}/hot.json"
-    headers = {
-        'User-Agent': 'python:recurse.subreddit:v1.0'
-    }
+    base_url = 'https://www.reddit.com/r/{}/hot.json'.format(subreddit)
+    params = {'after': after} if after else {}
 
-    # Parameters for pagination
-    params = {'limit': 100}
-    if len(hot_list) > 0:
-        params['after'] = f't3_{hot_list[-1]["id"]}' if hot_list else None
+    request = requests.get(
+        base_url,
+        params=params,
+        headers={'User-Agent': 'Agent Uche'},
+        allow_redirects=False
+    )
 
-    try:
-        # Send GET request without redirects
-        response = requests.get(
-            url, 
-            headers=headers, 
-            params=params, 
-            allow_redirects=False
+    if request.status_code != 200:
+        return None  # Base case: Stop if the request fails
+
+    data = request.json()
+    posts = data.get('data', {}).get('children', [])
+
+    for post in posts:
+        hot_list.append(post['data']['title'])
+
+    next_page = data.get('data', {}).get('after')
+    if next_page:
+        # Recursively call to fetch the next page
+        return recurse(
+            subreddit, hot_list, after=next_page, max_pages=max_pages
         )
 
-        # Check for invalid subreddit
-        if response.status_code != 200:
-            return None
-
-        # Parse response
-        results = response.json()
-
-        # Validate response structure
-        if 'data' not in results or 'children' not in results['data']:
-            return None
-
-        # Extract posts
-        posts = results['data']['children']
-
-        # If no more posts, return the list
-        if not posts:
-            return hot_list if hot_list else None
-
-        # Add posts to the list
-        hot_list.extend(posts)
-
-        # Recursive call to get next page
-        return recurse(subreddit, hot_list)
-
-    except Exception:
-        return None
+    return hot_list if len(hot_list) > 0 else None
