@@ -1,0 +1,31 @@
+ubuntu@229-web-01:~/AirBnB_clone_v2$ tmux new-session -d 'gunicorn --bind 0.0.0.0:5000 web_flask.0-hello_route:app'
+ubuntu@229-web-01:~/AirBnB_clone_v2$ pgrep gunicorn
+1661
+1665
+ubuntu@229-web-01:~/AirBnB_clone_v2$ tmux new-session -d 'gunicorn --bind 0.0.0.0:5001 web_flask.6-number_odd_or_even:app'
+ubuntu@229-web-01:~/AirBnB_clone_v2$ pgrep gunicorn
+1661
+1665
+1684
+1688
+
+ubuntu@229-web-01:~/AirBnB_clone_v2$ curl 127.0.0.1:5000/airbnb-onepage/
+Hello HBNB!ubuntu@229-web-01:~/AirBnB_clone_v2$
+
+ubuntu@229-web-01:~/AirBnB_clone_v2$ curl 127.0.0.1:5001/number_odd_or_even/6
+<!DOCTYPE html>
+<HTML lang="en">
+  <HEAD>
+    <TITLE>HBNB</TITLE>
+  </HEAD>
+  <BODY><H1>Number: 6 is even</H1></BODY>
+</HTML>ubuntu@229-web-01:~/AirBnB_clone_v2
+ubuntu@229-web-01:~$ 
+ubuntu@229-web-01:~/AirBnB_clone_v2$ curl 127.0.0.1/airbnb-dynamic/number_odd_or_even/5
+<!DOCTYPE html>
+<HTML lang="en">
+  <HEAD>
+    <TITLE>HBNB</TITLE>
+  </HEAD>
+  <BODY><H1>Number: 5 is odd</H1></BODY>
+</HTML>ubuntu@229-web-01:~/AirBnB_clone_v2$
